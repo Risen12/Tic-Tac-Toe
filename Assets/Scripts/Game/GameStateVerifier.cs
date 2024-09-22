@@ -4,12 +4,16 @@ using UnityEngine;
 public class GameStateVerifier : MonoBehaviour
 {
     [SerializeField] private GridMaker _gridMaker;
+    [SerializeField] private Sprite _nullFigure;
+    [SerializeField] private Sprite _chestFigure;
 
     private State _state;
     private int _rowsCount;
     private int _columnsCount;
+    private Cell[,] _cells;
+    private string _winnerName;
 
-    public event Action GameFinished;
+    public event Action<string> GameFinished;
 
     private void OnDisable()
     {
@@ -22,23 +26,23 @@ public class GameStateVerifier : MonoBehaviour
         _state.Changed += OnStateChanged;
         _rowsCount = _gridMaker.RowsCount;
         _columnsCount = _gridMaker.ColumnsCount;
+        _cells = _gridMaker.GetCells();
     }
 
     private void OnStateChanged()
     {
         if (VerifyColumns() || VerifyRows())
-            GameFinished?.Invoke();
+            GameFinished?.Invoke(_winnerName);
     }
 
     private bool VerifyColumns()
     {
         bool result = true;
-        Cell[] cells = _gridMaker.GetCells();
-        Sprite currentSprite = null;
+        Sprite currentSprite;
 
         for (int i = 0; i < _columnsCount; i++)
         {
-            currentSprite = cells[i].GetCurrentSprite();
+            currentSprite = _cells[0, i].GetCurrentSprite();
 
             if (currentSprite == null)
             {
@@ -48,9 +52,9 @@ public class GameStateVerifier : MonoBehaviour
 
             result = true;
 
-            for (int j = i; j < cells.Length; j += _columnsCount)
+            for (int j = 0; j < _rowsCount; j++)
             {
-                if (cells[j].GetCurrentSprite() != currentSprite)
+                if (_cells[j, i].GetCurrentSprite() != currentSprite)
                 {
                     result = false;
                     break;
@@ -58,7 +62,14 @@ public class GameStateVerifier : MonoBehaviour
             }
 
             if (result)
+            {
+                if (currentSprite == _nullFigure)
+                    _winnerName = "Нолики";
+                else
+                    _winnerName = "Крестики";
+
                 return result;
+            }
         }
 
         return result;
@@ -67,12 +78,11 @@ public class GameStateVerifier : MonoBehaviour
     private bool VerifyRows()
     {
         bool result = true;
-        Cell[] cells = _gridMaker.GetCells();
-        Sprite currentSprite = null;
+        Sprite currentSprite;
 
-        for (int i = 0; i < _rowsCount; i += _columnsCount)
+        for (int i = 0; i < _rowsCount; i++)
         {
-            currentSprite = cells[i].GetCurrentSprite();
+            currentSprite = _cells[i, 0].GetCurrentSprite();
 
             if (currentSprite == null)
             {
@@ -82,9 +92,9 @@ public class GameStateVerifier : MonoBehaviour
 
             result = true;
 
-            for (int j = i; j < i + _columnsCount; j++)
+            for (int j = 0; j < _columnsCount; j++)
             {
-                if (cells[j].GetCurrentSprite() != currentSprite)
+                if (_cells[i, j].GetCurrentSprite() != currentSprite)
                 {
                     result = false;
                     break;
@@ -92,7 +102,14 @@ public class GameStateVerifier : MonoBehaviour
             }
 
             if (result)
+            {
+                if (currentSprite == _nullFigure)
+                    _winnerName = "Нолики";
+                else
+                    _winnerName = "Крестики";
+
                 return result;
+            }
         }
 
         return result;

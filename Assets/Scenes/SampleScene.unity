@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridMaker: {fileID: 1633806988}
+  _nullFigure: {fileID: 21300000, guid: 869ab4b11c2966d4c90621abb3dbecb7, type: 3}
+  _chestFigure: {fileID: 21300000, guid: 081806319cded4742b03ad50e4679d18, type: 3}
 --- !u!4 &571091129
 Transform:
   m_ObjectHideFlags: 0
@@ -294,7 +296,7 @@ MonoBehaviour:
   _nullPrefab: {fileID: 4316184742179904871, guid: abafdc2c88e417b409f415adea7bdd17, type: 3}
   _chestPrefab: {fileID: -3566634729345451766, guid: 8d5eac8e961762f4097b06296fdb4ad7, type: 3}
   _gameStateVerifier: {fileID: 571091128}
-  _enemyGameManager: {fileID: 0}
+  _enemyGameManager: {fileID: 1637018271}
 --- !u!4 &1360166411
 Transform:
   m_ObjectHideFlags: 0
@@ -437,7 +439,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633806985}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -499,6 +501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1637018272}
   - component: {fileID: 1637018271}
+  - component: {fileID: 1637018274}
   m_Layer: 0
   m_Name: EnemyGameManager
   m_TagString: Untagged
@@ -518,8 +521,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547eed61f73aab8488be4a3e9136150e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _side: 0
-  _gridMaker: {fileID: 0}
+  _nullPrefab: {fileID: 4316184742179904871, guid: abafdc2c88e417b409f415adea7bdd17, type: 3}
+  _side: 1
+  _gridMaker: {fileID: 1633806988}
 --- !u!4 &1637018272
 Transform:
   m_ObjectHideFlags: 0
@@ -535,6 +539,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1637018274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637018270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944f98b60e17f18488a1d049dfb430ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridMaker: {fileID: 1633806988}
+  _nullSprite: {fileID: 21300000, guid: 869ab4b11c2966d4c90621abb3dbecb7, type: 3}
+  _chestSprite: {fileID: 21300000, guid: 081806319cded4742b03ad50e4679d18, type: 3}
 --- !u!1 &1806155770
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +13,7 @@ public class GridMaker : MonoBehaviour
     private RectTransform _rectTransform;
     private int _cellHeight;
     private int _cellWidth;
-    private Cell[] _cells;
-    private int _cellIndex;
+    private Cell[,] _cells;
 
     public int RowsCount => _rowCount;
     public int ColumnsCount => _columnCount;
@@ -24,8 +22,7 @@ public class GridMaker : MonoBehaviour
     {
         _gridLayoutGroup = GetComponent<GridLayoutGroup>();
         _rectTransform = GetComponent<RectTransform>();
-        _cells = new Cell[_rowCount * _columnCount];
-        _cellIndex = 0;
+        _cells = new Cell[_rowCount, _columnCount];
 
         DefineParameters();
         GenerateGrid();
@@ -49,7 +46,7 @@ public class GridMaker : MonoBehaviour
             for (int j = 0; j < _columnCount; j++)
             {
                Cell cell = Instantiate(_cellPrefab, transform);
-                _cells[_cellIndex++] = cell;
+                _cells[i, j] = cell;
             }
         }
     }
@@ -60,15 +57,28 @@ public class GridMaker : MonoBehaviour
         _gridLayoutGroup.spacing = new Vector2(offset, offset);
     }
 
-    public Cell[] GetCells()
+    public Cell[,] GetCells()
     {
-        Cell[] gridCells = new Cell[_cells.Length];
+        Cell[,] gridCells = new Cell[RowsCount, ColumnsCount];
 
-        for (int i = 0; i < gridCells.Length; i++)
+        for (int i = 0; i < RowsCount; i++)
         {
-            gridCells[i] = _cells[i];
+            for (int j = 0; j < ColumnsCount; j++)
+            {
+                gridCells[i, j] = _cells[i, j];
+            }
         }
 
         return gridCells;
+    }
+
+    public void SetNullFigure(Coordinate coordinates, Null nullFigure)
+    {
+        _cells[coordinates.X, coordinates.Y].SetNullFigure(nullFigure);
+    }
+
+    public void SetChestFigure(Coordinate coordinates, Chest chestFigure)
+    {
+        _cells[coordinates.X, coordinates.Y].SetChestFigure(chestFigure);
     }
 }

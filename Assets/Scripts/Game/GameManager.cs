@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private EnemyGameManager _enemyGameManager;
 
     private State _gameState;
+    private Cell[,] _cells;
 
     private void Start()
     {
@@ -19,7 +20,11 @@ public class GameManager : MonoBehaviour
 
         _gameStateVerifier.GameFinished += OnGameFinished;
 
+        _cells = _gridMaker.GetCells();
+
         SubscribeCellsEvents();
+
+        _enemyGameManager.Init(_gameState);
     }
 
     private void OnDisable()
@@ -36,14 +41,13 @@ public class GameManager : MonoBehaviour
             cell.SetChestFigure(_chestPrefab);
 
         _gameState.Change();
-        _enemyGameManager.SetFigure();
+        _enemyGameManager.MakeMove();
     }
 
     private void SubscribeCellsEvents()
     {
-        Cell[] cells = _gridMaker.GetCells();
 
-        foreach (Cell cell in cells)
+        foreach (Cell cell in _cells)
         { 
             cell.Clicked += OnCellClicked;
         }
@@ -51,16 +55,14 @@ public class GameManager : MonoBehaviour
 
     private void UnsubscribeCellsEvents()
     {
-        Cell[] cells = _gridMaker.GetCells();
-
-        foreach (Cell cell in cells)
+        foreach (Cell cell in _cells)
         {
             cell.Clicked -= OnCellClicked;
         }
     }
 
-    private void OnGameFinished()
+    private void OnGameFinished(string winner)
     {
-        Debug.Log($"Игра завершена, победили крестики!");
+        Debug.Log($"Игра завершена, победили {winner}!");
     }
 }

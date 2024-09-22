@@ -10,6 +10,8 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     public event Action<Cell> Clicked;
 
+    public bool IsBusy => _isBusy;
+
     private void Awake()
     {
         _isBusy = false;
@@ -42,10 +44,14 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     public Sprite GetCurrentSprite() 
     {
-        if(_currentObject == null)
+        if (_currentObject != null && _currentObject.TryGetComponent(out Image image))
+        {
+            return image.sprite;
+        }
+        else
+        {
             return null;
-
-        return _currentObject.GetComponent<Image>().sprite;
+        }
     }
 
     private bool ValidState()
